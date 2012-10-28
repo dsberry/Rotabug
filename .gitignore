@@ -1,0 +1,10 @@
+*~
+gwt-unitCache/
+war/WEB-INF/
+war/rotabug/*cache*
+war/rotabug/hosted.html
+war/rotabug/gwt/
+.settings/
+.classpath
+.project
+gwt-unitCache/
