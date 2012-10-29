@@ -1,0 +1,100 @@
+GUI:
+
+For error messages, GMAIL uses a CSS pop-up window with a "OK" button and
+a close X in the top right corner. It causes the background (the rest of
+the page) to fade, and has a blurred drop shadow. It feels rather minimalist.
+
+
+
+Glossary:
+========
+
+- "Current property": the specific property within the events contained
+within a rota that is to be assigned a value when the rota is next optimised.
+
+- "Event": is a specific set of values for the properties declared by the
+corresponding event type. In other words, an event is an instance of an
+event type. Each property can be in one of three states:
+
+   1) "Frozen": The property has a value (i.e a "resource" has been
+   associated with the property), and that value cannot be changed by
+   subsequent rota optimisation.
+
+   2) "Set": The property has a value, but that value can be changed by
+   subsequent rota optimisation.
+
+   3) "Clear": The property has no value.
+
+- "Event type": declares the properites of a class of event. E.g a "church
+service" event type may have properties such as "Time", "Venue", "Primary
+Steward", "Secondary steward", "Organist", etc. All event types will
+include a "label" property, which holds a unique textual identifier for
+each specific event.
+
+- "Resource": A single value to which an event property may be set. In
+general, there will be a range of values to which an event property could
+be set. Each one of these values is a separate resource. So for instance,
+a "church service" event, has a property called "Organist" which can be
+set to the value "Enid", "Ben", "Carol" or "Lynne". In this sense,
+"Enid", "Ben", "Carol" or "Lynne" are all resources. Each resource has an
+"owner" who has the authority to say whether the resource can be used for
+a particular event.
+
+- "Rota": A collection of events. The properties of these events may be
+any of the three states "frozen", "set" or "clear".
+
+- "Rota optimisation": the action of ensuring that all events in a rota
+have a defined value for the "current property". Events that have
+"frozen" value for the current property are left unchanged. Other events
+are modified by assigning a new value to the current property.
+
+
+Actions:
+=======
+
+- Create a new event type
+- Edit an existing event type
+- Create a new rota
+- Edit an existing rota
+- Optimise a rota with respect to a named event property (the "current property").
+- Request resource owners to indicate availability of resources for each event
+  in the rota.
+
+
+
+
+
+To create a new rota:
+====================
+
+1) Select an existing event type, or create a new custom event type by
+modifying an existing event type by adding new named properties
+
+2) Define the set of values (i.e. resources) that can be assigned to each
+property. Optionally, define the "owner" (name, email, etc) of each
+resource. Any resources left with no owner are implicitly owned by the
+rota creator.
+
+3) Loop round, creating the individual events to include in the rota.
+Assign resources to any event properties that are known in advance and
+should not be changed when the rota is optimised. These properties are
+set to the "frozen" state (all others are left in the "clear" state). At
+the least, each event should be assigned a unique textual label (or
+accept the default auto-generated labels). Any properties left unassigned
+here are assigned a value when the rota is optimised.
+
+
+To optimise a rota:
+==================
+
+1) Select a specific event property as the "current property".
+
+2) Email the owners of resources that may be assigned to the current
+property to indicate there availability for each event. For each event
+the owner selects "Available", "Not available", or "Available only if no
+other resource is available". The owner may also indicate the maximum
+number of rota events at which the resource can be used.
+
+
+
+

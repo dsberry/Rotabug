@@ -1,0 +1,104 @@
+Domain name:
+------------
+
+On 4/9/2012 at 17:09 BST I registered the domain name www.rotabug.com
+using my justhost account (chorleyandleylandmethodists.org "I am not a
+spade" https://my.justhost.com/cgi-bin/cplogin). It is free for one year,
+and they will automatically re-register it each year, I assume at the
+cost of £7.99 that was shown on the registration age.
+
+
+
+To begin a new blank project:
+----------------------------
+
+- install eclipse (https://developers.google.com/web-toolkit/usingeclipse)
+- install GWT plugin for eclipse
+- create a web application
+  - Rotabug in package com.rotabug
+  - do generate sample code
+  - "Create project in " -> /var/www/html (see
+    http://cambiatablog.wordpress.com/2010/11/22/gwt-developing-with-hosted-mode-and-phpxampp/ )
+  - delete GreetingService*.java from src/com.rotabug.client
+  - delete FieldVerified.java from src/com.rotabug.shared
+  - delete all content from onModuleLoad in Rotabug.java
+  - delete all unused stuff from Rotabug.java
+
+  - Edit Rotabug.html within "war"
+    - Remove comments
+    - Change title to "Rotabug - rota creation made easy"
+    - Delete all body elements other than the history enabling iframe and <noscript> tag.
+    - Add a line "<div id="Rotabug"></div>" at the top of the body.
+
+
+- Right click on "war" and click on "New" then "Other", then "PHP" then "PHP File" - enter name "Rotabug.php" and finish.
+- Right click on "war" and click on "New" then "Other", then "PHP" then "PHP File" - enter name "rb.php" and finish.
+- Copy ~/Downloads/rb.php /var/www/html/Rotabug/war (to replace the file created above -
+see redbeanphp.com)
+
+- Right click the eclipse project name in the package explorer ("Rotabug") and look for
+  the Run As > Run Configurations… alternative. In the dialog box, sele the "Web
+  Application" - "Rotabug" item in the left tree, and open the Arguments tab. Set the
+  startupurl string to http://localhost/Rotabug/war/Rotabug.html . Then click "Run" at
+  bottom of dialog box.
+
+- DO the same again but this time select "Debug As" > "Debug Configurations"� alternative.
+- In eclipse, click the "GWT Compile PRoject" item in the "Google" button
+
+- Click the green "Run" button, then double click the url that appears (should be http://localhost/Rotabug/war/Rotabug.html?gwt.codesvr=127.0.0.1:9997)
+
+
+
+To test a change:
+-----------------
+
+- In eclipse, save all changes (contrl-S) and compile the project ("GWT
+            Compile Project" in the google button)
+- If development mode is not already running, click the green "Run" button,
+  then double click the url that appears (should be
+  http://localhost/Rotabug/war/Rotabug.html?gwt.codesvr=127.0.0.1:9997)
+- If development mode is already running, click the yellow back-to-back
+  arrows symbol, and reload the web page in the browser.
+
+
+
+
+MVP etc
+-------
+
+See https://developers.google.com/web-toolkit/articles/mvp-architecture
+
+For each form/GUI seen by the user that is part of the app we need:
+
+1) Give it a name: e.g.  "Home", "Login", "EditVenue", etc
+
+2) A presenter class: e.g "HomePresenter", "LoginPresenter", etc. It
+includes a definition of a "Display" interface that defines all the
+interatactions between the presenter and the view (and a method to get
+the view as a single Widget). .
+
+
+3) A view class: e.g. "HomeView", "LoginView", etc. This contains just the
+widgets themselves with no event handlers or other logic.
+
+
+
+
+
+4) EntryPoint.onModuleLoad: Creates any app-wide resources (used by
+multiple views/presenters). E.g. the server and user requesters, the
+AppController, the EventBus. It then passes control to the AppController.
+
+
+5) Define a set of app wide event classes - these are events that a
+presenter fires that are acted upon by other presenters. Each class needs
+to extend GwtEvent., and requires an associated event handler class.
+
+
+
+GIT:
+----
+
+http://unicase.blogspot.co.uk/2011/01/egit-tutorial-for-beginners.html
+http://wiki.eclipse.org/EGit/User_Guide
+
