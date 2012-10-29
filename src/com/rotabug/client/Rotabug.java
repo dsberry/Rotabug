@@ -25,6 +25,10 @@ public class Rotabug implements EntryPoint {
 	public static final String LOGO_WIDTH = "100px";
 	public static final String LOGO_HEIGHT = "94px";
 
+	// Identifiers for differnt places where a view can be displayed.
+	public static final int APPUI = 0;
+	public static final int DIALOG = 1;
+	
 	// Indicates how verbose we should be. Zero is for normal user-level
 	// verbosity. Higher values produce more verbosity.
 	public static final int DEBUG_LEVEL = 1;

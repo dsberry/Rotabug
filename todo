@@ -15,6 +15,10 @@ Current Work:
   
 -  As a means of getting back into all this after a long gap, could go through and comment everything properly?
  
+- UserRequester/UserRequest system needs replacing. Provide AlertPresenter/AlertView classes, just like other 
+  Presenter/View pairs. Allow presenters to present their views into either the main App. UI window, or into 
+  a dialog box (the dialog box should implement a FIFO queue to serialise user alerts).
+   
  
 - Login and Sign up: Allow accounts from Rotabug, Facebook, Gmail, Twitter, OpenID to be used. 
   

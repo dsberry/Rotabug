@@ -19,6 +19,7 @@ public abstract class Presenter {
 	protected HandlerManager eventBus;
 	protected Display display;
 	boolean bound = false;
+	protected int where;
 
 	// Static instances of all known subclasses of Presenter
 	private static HashMap<String, Presenter> singletons = new HashMap<String, Presenter>();
@@ -41,13 +42,14 @@ public abstract class Presenter {
 	public abstract void bind();
 
 	// Display the view associated with this Presenter
-	public void go(final HasWidgets container) {
+	public void go(final HasWidgets container,int where) {
 		if (!bound) {
 			bind();
 			bound = true;
 		}
 		container.clear();
 		container.add(display.asWidget());
+		this.where = where;
 	}
 
 	// Returns the Presenter that manages the view specified by "place".

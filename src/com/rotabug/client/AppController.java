@@ -46,7 +46,7 @@ public class AppController implements ValueChangeHandler<String> {
 
 	// Called when a history event occurs (e.g. the "back" button)
 	public void onValueChange(ValueChangeEvent<String> event) {
-		newView(event.getValue());
+		newView(event.getValue(),Rotabug.APPUI);
 	}
 
 	private void bind() {
@@ -74,11 +74,17 @@ public class AppController implements ValueChangeHandler<String> {
 	}
 
 	// Display a new page of the application's user interface.
-	public void newView(String token) {
+	public void newView(String token, int where) {
 		if (token != null) {
+			HasWidgets widget;
+			if( where == Rotabug.APPUI ) {
+				widget = appUI;
+			} else if( where == Rotabug.DIALOG ){
+				widget = userDialog;
+			}
 			Presenter presenter = Presenter.byPlace(token);
 			if (presenter != null)
-				presenter.go(appUI);
+				presenter.go(where,widget);
 		}
 
 	}
