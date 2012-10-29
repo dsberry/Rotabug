@@ -1,0 +1,29 @@
+  
+To add a new class of Presenter:
+1 - Create the class by copying an existing Presenter subclass
+2 - Add it into the list in the "byPlace" method the base Presenter class.
+3 - Create one or more corresponding view subclasses
+4 - Modify the "bind" method of other appropriate Presenter subclasses so that 
+    they fire a RotabugEvent on the main eventBus to display the new presenter's view.
+5 - If the new class fires any RotabugEvents, add them to the "bind" method of the AppController class.
+
+To Add a new class of View:
+1 - Create the class by copying an existing View subclass
+2 - It should implement the Display interface defined in the corresponding Presenter subclass.
+3 - Add it into the list in the "byPlace" method the base Presenter class.
+
+To add a new type of RotabugEVent:
+1 - The class that services the event should define a static RotabugEventType object with a 
+    name that indicates the nature of the event. For instance:
+
+	public static final RotabugEventType PRESENT = new RotabugEventType();
+
+2 - The class that fires the event should use code like this to fire it (assuming the Test2Presenter 
+    class services the event):
+
+    eventBus.fireEvent(new RotabugEvent(Test2Presenter.PRESENT));
+
+
+3 - The "bind" method of the AppController class should be modified so that its RotabugEventHandler
+    checks for the event type object and invokes the appropriate method in the class that services 
+    the event. 

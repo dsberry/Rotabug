@@ -1,0 +1,21 @@
+Bugs:
+
+- On fresh load, click "test1" or "test2" button threee times. The "TE TE" message from the server is displayed twice, rather than once.
+  Looking in ~/rotabug/php.log shows that two requests were sent from the client on the third click.
+  The error happens when the "test1" button in the test2 view is clicked for the second time.
+  SOLVED - Each time a view was presented by calling the "go" method in the presenter, the bind() method would be called again, 
+  adding another click listener to the biutton. SOLUTION - only bind once for each display.
+  
+
+Current Work:
+
+- 20/10/12: Rationalise the use of presenters, views and event types. Try to gather all "case"-like 
+  statements together into one place. Move as much as the work as possible out of specific subclasses, 
+  into the base class Presenter, View and RotabugEvent. Done. See "How to".
+  
+-  As a means of getting back into all this after a long gap, could go through and comment everything properly?
+ 
+ 
+- Login and Sign up: Allow accounts from Rotabug, Facebook, Gmail, Twitter, OpenID to be used. 
+  
+
