@@ -42,7 +42,7 @@ see redbeanphp.com)
   startupurl string to http://localhost/Rotabug/war/Rotabug.html . Then click "Run" at
   bottom of dialog box.
 
-- DO the same again but this time select "Debug As" > "Debug Configurations"¦ alternative.
+- DO the same again but this time select "Debug As" > "Debug Configurations"ï¿½ alternative.
 - In eclipse, click the "GWT Compile PRoject" item in the "Google" button
 
 - Click the green "Run" button, then double click the url that appears (should be http://localhost/Rotabug/war/Rotabug.html?gwt.codesvr=127.0.0.1:9997)
@@ -102,3 +102,26 @@ GIT:
 http://unicase.blogspot.co.uk/2011/01/egit-tutorial-for-beginners.html
 http://wiki.eclipse.org/EGit/User_Guide
 
+
+
+
+PHP:
+
+1) install PDT (see http://wiki.eclipse.org/PDT/Installation#Eclipse_3.7_.2F_Indigo_.2F_PDT_3.0)
+2) Check php server is running by creating /var/www/html/index.php holding
+
+<?php
+phpinfo();
+?>
+
+and then visiting http://localhost/index.php
+
+3) The rotabug.php file writes to a log file so make sure it exists:
+
+% touch /home/dsb/rotabug/php.log
+% chmod a+w /home/dsb/rotabug/php.log
+
+4) Make sure phpmyadmin is installed (e.g. see help.ubuntu.com/community/phpMyAdmin)
+5) sudo /etc/init.d/apache2 reload
+6) Go to  http://localhost/phpmyadmin  in a browser, log in as root.
+7) Click "databases" and create a new database called rotabug
