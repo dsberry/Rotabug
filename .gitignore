@@ -7,4 +7,5 @@ war/rotabug/gwt/
 .settings/
 .classpath
 .project
+.gwt
 gwt-unitCache/
