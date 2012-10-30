@@ -19,6 +19,7 @@ public class AppController implements ValueChangeHandler<String> {
 	public static ServerRequester server = null;
 	public static UserRequester user = null;
 	public static HandlerManager eventBus = null;
+	public static UserDialog userDialog = null;
 
 	// The container in which to display the application's user interface
 	private HasWidgets appUI;
@@ -32,6 +33,8 @@ public class AppController implements ValueChangeHandler<String> {
 			this.user = user;
 		if (this.eventBus == null)
 			this.eventBus = eventBus;
+		if (this.userDialog == null)
+			this.userDialog = new UserDialog();
 		bind();
 	}
 
@@ -59,7 +62,16 @@ public class AppController implements ValueChangeHandler<String> {
 		eventBus.addHandler(RotabugEvent.TYPE, new RotabugEventHandler() {
 			public void onRotabugEvent(RotabugEvent event) {
 				RotabugEventType type = event.getType();
-				if (type == Test1Presenter.PRESENT) {
+				if( type == Presenter.CLOSE ){
+					int target = event.getTarget();
+					if( target == Rotabug.APPUI ) {
+						History.back();
+					} else if( target == Rotabug.DIALOG ) {
+						userDialog.next();
+					} else {
+						UserRequester.displayError(0, "Unknown Rotabug target.");
+					}
+				} else if (type == Test1Presenter.PRESENT) {
 					History.newItem(Test1Presenter.PLACE);
 				} else if (type == Test2Presenter.PRESENT) {
 					History.newItem(Test2Presenter.PLACE);
@@ -74,17 +86,17 @@ public class AppController implements ValueChangeHandler<String> {
 	}
 
 	// Display a new page of the application's user interface.
-	public void newView(String token, int where) {
+	public void newView(String token, int target) {
 		if (token != null) {
-			HasWidgets widget;
-			if( where == Rotabug.APPUI ) {
+			HasWidgets widget = null;
+			if( target == Rotabug.APPUI ) {
 				widget = appUI;
-			} else if( where == Rotabug.DIALOG ){
+			} else if( target == Rotabug.DIALOG ){
 				widget = userDialog;
 			}
 			Presenter presenter = Presenter.byPlace(token);
 			if (presenter != null)
-				presenter.go(where,widget);
+				presenter.go(widget,target);
 		}
 
 	}
