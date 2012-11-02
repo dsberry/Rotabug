@@ -28,7 +28,7 @@ public class Rotabug implements EntryPoint {
 	// Identifiers for differnt places where a view can be displayed.
 	public static final int APPUI = 0;
 	public static final int DIALOG = 1;
-	
+
 	// Indicates how verbose we should be. Zero is for normal user-level
 	// verbosity. Higher values produce more verbosity.
 	public static final int DEBUG_LEVEL = 1;
@@ -41,7 +41,8 @@ public class Rotabug implements EntryPoint {
 		ServerRequester server = new ServerRequester();
 
 		// Create an object for displaying dialog boxes for user interaction.
-		UserRequester user = UserRequester.getInstance();
+		UserRequester userOld = UserRequester.getInstance();
+		UserDialog user = UserDialog.getInstance();
 
 		// Create an object for sending events from one presenter to another.
 		HandlerManager eventBus = new HandlerManager(null);
@@ -67,13 +68,13 @@ public class Rotabug implements EntryPoint {
 		banner.setCellWidth(logo, LOGO_WIDTH);
 
 		HTML title = new HTML(
-				"<big><b>Rotabug -</b></big><br>rota creation made easy");
+				"<big><b>Rotabug</b></big><br>rota creation made easy");
 		setID(title, "banner-title");
 		banner.add(title);
 
 		// Add links at the right end of the banner for sign-up, login and home.
 		VerticalPanel links = new VerticalPanel();
-		EventLink link = new EventLink("Sign in",SignInPresenter.PRESENT);
+		EventLink link = new EventLink("Sign in", SignInPresenter.PRESENT);
 		link.addStyleName("banner-link");
 		link.setTitle("Sign in using a new or existing account");
 		links.add(link);

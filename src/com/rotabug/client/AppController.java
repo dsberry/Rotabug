@@ -25,16 +25,14 @@ public class AppController implements ValueChangeHandler<String> {
 	private HasWidgets appUI;
 
 	@SuppressWarnings("static-access")
-	public AppController(ServerRequester server, UserRequester user,
+	public AppController(ServerRequester server, UserDialog user,
 			HandlerManager eventBus) {
 		if (this.server == null)
 			this.server = server;
-		if (this.user == null)
-			this.user = user;
 		if (this.eventBus == null)
 			this.eventBus = eventBus;
 		if (this.userDialog == null)
-			this.userDialog = new UserDialog();
+			this.userDialog = user;
 		bind();
 	}
 
