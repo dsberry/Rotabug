@@ -7,6 +7,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.rotabug.client.presenter.Display;
 
+// An object that displays a series of "views" within a pop-up dialog box. The views are 
+// queued, the next view being displayed when the previous view is closed.
+
 public class UserDialog implements ViewBox {
 	private DialogBox dbox;
 	private VerticalPanel bodyPanel;

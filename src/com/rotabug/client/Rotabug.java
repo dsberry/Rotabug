@@ -7,7 +7,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -27,7 +26,7 @@ public class Rotabug implements EntryPoint {
 
 	// Indicates how verbose we should be. Zero is for normal user-level
 	// verbosity. Higher values produce more verbosity.
-	public static final int DEBUG_LEVEL = 1;
+	public static final int VERBOSITY_LEVEL = 1;
 
 	// Main entry. This follows (roughly) the MVP architecture described at
 	// https://developers.google.com/web-toolkit/articles/mvp-architecture
@@ -66,11 +65,6 @@ public class Rotabug implements EntryPoint {
 		homeLink.addStyleName("banner-link");
 		homeLink.setTitle("Go to the " + APP_NAME + " home page");
 		links.add(homeLink);
-		//
-		// link = new Hyperlink("Log in", LogInPresenter.PLACE);
-		// link.setStyleName( "banner-link" );
-		// link.setTitle("Log into your "+APP_NAME+" account");
-		// links.add(link);
 
 		banner.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		banner.add(links);
@@ -82,10 +76,10 @@ public class Rotabug implements EntryPoint {
 		root.add(appUI);
 
 		// Create an object for displaying the pages of the main application
-		// user interface.
+		// user interface. This encapsulates the above VerticalPanel.
 		ViewBox appui = new AppUI(appUI);
 
-		// Create an object for displaying dialog boxes for user interaction.
+		// Create an object for managing a dialog box used for user interaction.
 		ViewBox user = new UserDialog();
 
 		// Create an object to communicate with the server

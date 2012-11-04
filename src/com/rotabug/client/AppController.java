@@ -21,6 +21,8 @@ public class AppController implements ValueChangeHandler<String> {
 	public static ViewBox user = null;
 	public static ViewBox appUI = null;
 
+	// Record static references to the four management objects above, so that
+	// they can be accessed easily from anywhere.
 	@SuppressWarnings("static-access")
 	public AppController(ServerRequester server, ViewBox user,
 			HandlerManager eventBus, ViewBox appui) {
@@ -35,6 +37,9 @@ public class AppController implements ValueChangeHandler<String> {
 		bind();
 	}
 
+	// Display the main application. If the URL used to get here did not include
+	// fragment id, start at the home page. Otherwise start at the place
+	// indicated by the fragment id.
 	public void go() {
 		if ("".equals(History.getToken())) {
 			History.newItem(HomePresenter.PLACE);
@@ -43,12 +48,15 @@ public class AppController implements ValueChangeHandler<String> {
 		}
 	}
 
-	// Called when a history event occurs (e.g. the "back" button)
+	// Called when a history event is fired (e.g. the "back" button)
 	public void onValueChange(ValueChangeEvent<String> event) {
 		newView(event.getValue(), appUI);
 	}
 
+	// Set up handling for events handled by this class.
 	private void bind() {
+
+		// This class handles history events (see "onValueChange").
 		History.addValueChangeHandler(this);
 
 		// A handler for all types of RotabugEvents. These are fired by a
@@ -92,7 +100,8 @@ public class AppController implements ValueChangeHandler<String> {
 		});
 	}
 
-	// Display a new page of the application's user interface.
+	// Display a new page of the application's user interface (indicated by
+	// "token"), displaying it within the container specified by "target"
 	public void newView(String token, ViewBox target) {
 		if (token != null) {
 			Presenter presenter = Presenter.byPlace(token);
@@ -101,8 +110,10 @@ public class AppController implements ValueChangeHandler<String> {
 		}
 	}
 
+	// Static function to display a message within a pop-up dialog box. Whether
+	// it is displayed depends on the current verbosity level.
 	public static void displayMessage(int level, String text) {
-		if (Rotabug.DEBUG_LEVEL >= level) {
+		if (Rotabug.VERBOSITY_LEVEL >= level) {
 			AlertPresenter presenter = (AlertPresenter) Presenter
 					.byPlace(AlertPresenter.PLACE);
 			presenter.setText(text);
@@ -111,6 +122,7 @@ public class AppController implements ValueChangeHandler<String> {
 		}
 	}
 
+	// Static function to display an error message within a pop-up dialog box. 
 	public static void displayError(String text) {
 		AlertPresenter presenter = (AlertPresenter) Presenter
 				.byPlace(AlertPresenter.PLACE);
