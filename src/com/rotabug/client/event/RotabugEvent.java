@@ -1,29 +1,25 @@
 package com.rotabug.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.rotabug.client.Rotabug;
+import com.rotabug.client.ViewBox;
 
 public class RotabugEvent extends GwtEvent<RotabugEventHandler> {
 	public static Type<RotabugEventHandler> TYPE = new Type<RotabugEventHandler>();
 	protected RotabugEventType type;
-	protected int target;
-
-	public RotabugEvent(RotabugEventType type) {
-		this(type, Rotabug.APPUI);
-	}
-
-	public RotabugEvent(RotabugEventType type, int target) {
+	protected ViewBox container;
+	protected boolean activity;
+	
+	public RotabugEvent(RotabugEventType type, ViewBox container, boolean activity) {
 		super();
 		this.type = type;
-		this.target = target;
+		this.container = container;
+		this.activity = activity;
 	}
 
-	@Override
 	public Type<RotabugEventHandler> getAssociatedType() {
 		return TYPE;
 	}
 
-	@Override
 	protected void dispatch(RotabugEventHandler handler) {
 		handler.onRotabugEvent(this);
 	}
@@ -32,7 +28,12 @@ public class RotabugEvent extends GwtEvent<RotabugEventHandler> {
 		return type;
 	}
 
-	public int getTarget() {
-		return target;
+	// null may be returned, indicating "AppUI".
+	public ViewBox getContainer() {
+		return container;
+	}
+
+	public boolean getActivity() {
+		return activity;
 	}
 }

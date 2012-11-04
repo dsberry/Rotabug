@@ -1,24 +1,22 @@
 package com.rotabug.client;
 
-import java.util.Iterator;
 import java.util.LinkedList;
-
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.rotabug.client.presenter.Display;
 
-public class UserDialog implements HasWidgets {
-	private static UserDialog instance = null;
+public class UserDialog implements ViewBox {
 	private DialogBox dbox;
 	private VerticalPanel bodyPanel;
-	private LinkedList<Widget> requests;
+	private LinkedList<Display> requests;
 	private Widget body;
 	private boolean inUse;
+	private Display display;
 
-	private UserDialog() {
-		requests = new LinkedList<UserRequest>();
+	public UserDialog() {
+		requests = new LinkedList<Display>();
 		dbox = new DialogBox();
 		dbox.setGlassEnabled(true);
 		dbox.setAnimationEnabled(true);
@@ -28,34 +26,37 @@ public class UserDialog implements HasWidgets {
 		bodyPanel.add(body);
 		dbox.setWidget(bodyPanel);
 		inUse = false;
+		display = null;
 	}
 
-	public static final UserDialog getInstance() {
-		if (instance == null)
-			instance = new UserDialog();
-		return instance;
+	public void close() {
+		dbox.hide();
+		display.onClose(this);
+		display = null;
+		if (requests.isEmpty()) {
+			inUse = false;
+		} else {
+			show(requests.removeFirst());
+		}
 	}
 
-	public void next() {
+	public void put(Display display) {
+		if (!inUse) {
+			show(display);
+		} else {
+			requests.add(display);
+		}
+	}
+
+	private void show(Display display) {
+		inUse = true;
+		dbox.setText(Rotabug.APP_NAME + ": " + display.getTitle());
 		bodyPanel.clear();
-
+		bodyPanel.add(display.asWidget());
+		dbox.center();
+		dbox.show();
+		this.display = display;
+		display.onShow(this);
 	}
 
-	// This method adds a widget to the queue of widgets to be displayed - it
-	// does not add the widget to the container itself.
-	public void add(Widget w) {
-		bodyPanel.add(w);
-	}
-
-	// Clearing is performed just before the next widget is displayed.
-	public void clear() {
-	}
-
-	public Iterator<Widget> iterator() {
-		return bodyPanel.iterator();
-	}
-
-	// Not sure when, or if, it is appropriate to remove  awidget from the User
-	public boolean remove(Widget w) {
-	}
 }

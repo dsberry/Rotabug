@@ -8,15 +8,24 @@ import com.rotabug.client.event.RotabugEventType;
 
 public class EventLink extends Anchor {
 	protected RotabugEventType etype;
+	protected ViewBox container;
+	protected boolean activity;
 
 	public EventLink(String text, RotabugEventType eventType) {
+		this(text, eventType, null, true);
+	}
+
+	public EventLink(String text, RotabugEventType eventType,
+			ViewBox cont, boolean act) {
 		super(text);
-		etype = eventType;
+		this.etype = eventType;
+		this.container = cont;
+		this.activity = act;
 		addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				AppController.eventBus.fireEvent(new RotabugEvent(etype));
+				AppController.eventBus.fireEvent(new RotabugEvent(etype,
+						container, activity));
 			}
 		});
 	}
-
 }

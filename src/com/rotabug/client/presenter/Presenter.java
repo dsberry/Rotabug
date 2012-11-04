@@ -3,11 +3,11 @@ package com.rotabug.client.presenter;
 import java.util.HashMap;
 
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.rotabug.client.AppController;
 import com.rotabug.client.ServerRequester;
-import com.rotabug.client.UserRequester;
+import com.rotabug.client.ViewBox;
 import com.rotabug.client.event.RotabugEventType;
+import com.rotabug.client.view.AlertView;
 import com.rotabug.client.view.HomeView;
 import com.rotabug.client.view.Test1View;
 import com.rotabug.client.view.Test2View;
@@ -16,23 +16,24 @@ import com.rotabug.client.view.SignInView;
 public abstract class Presenter {
 
 	protected ServerRequester server;
-	protected UserRequester user;
+	protected ViewBox user;
+	protected ViewBox container;
 	protected HandlerManager eventBus;
 	protected Display display;
 	boolean bound = false;
-	protected int target;
-	
+
 	// Define app. events that are applicable to all classes of Presenter.
 	public static final RotabugEventType CLOSE = new RotabugEventType();
 
 	// Static instances of all known subclasses of Presenter
 	private static HashMap<String, Presenter> singletons = new HashMap<String, Presenter>();
 
-	protected Presenter(ServerRequester server, UserRequester user,
+	protected Presenter(ServerRequester server, ViewBox user,
 			HandlerManager eventBus, Display view) {
 		this.server = server;
 		this.user = user;
 		this.eventBus = eventBus;
+		this.container = null;
 		setDisplay(view);
 	}
 
@@ -42,18 +43,22 @@ public abstract class Presenter {
 		this.bound = false;
 	}
 
-	// Set up bindings between this presenter and the controls in the associated view.
+	public void setTitle(String title) {
+		display.setTitle(title);
+	}
+
+	// Set up bindings between this presenter and the controls in the associated
+	// view.
 	public abstract void bind();
 
-	// Display the view associated with this Presenter
-	public void go(final HasWidgets container,int target) {
+	// Display the view associated with this Presenter in a given ViewBox
+	public void go(final ViewBox container) {
 		if (!bound) {
 			bind();
 			bound = true;
 		}
-		container.clear();
-		container.add(display.asWidget());
-		this.target = target;
+		container.put(display);
+		this.container = container;
 	}
 
 	// Returns the Presenter that manages the view specified by "place".
@@ -76,8 +81,12 @@ public abstract class Presenter {
 				result = new SignInPresenter(AppController.server,
 						AppController.user, AppController.eventBus,
 						new SignInView());
+			} else if (place.equals(AlertPresenter.PLACE)) {
+				result = new AlertPresenter(AppController.server,
+						AppController.user, AppController.eventBus,
+						new AlertView());
 			} else {
-				UserRequester.displayError(0, "unknown interface component '"
+				AppController.displayError( "unknown interface component '"
 						+ place + "'.");
 			}
 		}

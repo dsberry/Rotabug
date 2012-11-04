@@ -4,9 +4,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
+import com.rotabug.client.AppController;
 import com.rotabug.client.ServerRequest;
 import com.rotabug.client.ServerRequester;
-import com.rotabug.client.UserRequester;
+import com.rotabug.client.ViewBox;
 import com.rotabug.client.event.RotabugEvent;
 import com.rotabug.client.event.RotabugEventType;
 
@@ -19,7 +20,7 @@ public class Test2Presenter extends Presenter {
 		HasClickHandlers getTestButton();
 	}
 
-	public Test2Presenter(ServerRequester server, UserRequester user,
+	public Test2Presenter(ServerRequester server, ViewBox user,
 			HandlerManager eventBus, Display view) {
 		super(server, user, eventBus, view);
 		this.display = (Test2Display) super.display;
@@ -29,11 +30,11 @@ public class Test2Presenter extends Presenter {
 	public void bind() {
 		display.getTestButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				eventBus.fireEvent(new RotabugEvent( Test1Presenter.PRESENT ));
+				eventBus.fireEvent(new RotabugEvent(Test1Presenter.PRESENT,
+						container, true));
 				server.submitRequest(new ServerRequest(20) {
 					public void onSuccess(String result) {
-						UserRequester.displayMessage(0, "Test 2: "
-								+ result);
+						AppController.displayMessage(0, "Test 2: " + result);
 					}
 				});
 			}

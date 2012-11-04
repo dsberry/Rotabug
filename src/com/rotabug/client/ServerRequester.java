@@ -9,6 +9,9 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.rotabug.client.presenter.AlertPresenter;
+import com.rotabug.client.presenter.Presenter;
+import com.rotabug.client.view.AlertView;
 
 public class ServerRequester {
 
@@ -68,8 +71,8 @@ public class ServerRequester {
 	// client activity. The "warned" field indicates if the warning has been
 	// issued.
 	private Timer sessionTimer = null;
-	private static final int CLIENT_TIMEOUT1 = 600;
-	private static final int CLIENT_TIMEOUT2 = 60;
+	private static final int CLIENT_TIMEOUT1 = 10;
+	private static final int CLIENT_TIMEOUT2 = 4;
 	private boolean warned = false;
 
 	// A FIFO queue of request to send to the server.
@@ -83,14 +86,14 @@ public class ServerRequester {
 		ServerRequest request = new ServerRequest(REQUEST_SESSION_ID) {
 			public void onSuccess(String result) {
 				sessionId = JSONBuffer.stringFromJSON(result);
-				UserRequester.displayMessage(1, "Session ID: " + sessionId);
+				AppController.displayMessage(1, "Session ID: " + sessionId);
 
 				StringBuffer a = new StringBuffer();
 				for (int i = 0; i < NSECRET; i++) {
 					a.append(sessionId.charAt(SECRETS[i]));
 				}
 				sCode = Integer.parseInt(a.toString(), 16);
-				UserRequester.displayMessage(2, "Secret code: " + sCode);
+				AppController.displayMessage(2, "Secret code: " + sCode);
 
 				// Create a timer that will go off a fixed time after the last
 				// session activity to warn the user that the session is about
@@ -158,8 +161,8 @@ public class ServerRequester {
 				sb = ServerRequest.addToPOST(sb, RID_KEY,
 						spin2(Integer.toHexString(nextTicket), sessionId));
 			} else if (request.getOpcode() != REQUEST_SESSION_ID) {
-				UserRequester.displayError(0,
-						"waiting for the server - please repeat in a few seconds");
+				AppController.displayError("waiting for the server - "
+						+ "please repeat in a few seconds");
 				return;
 			}
 			sb = ServerRequest.addToPOST(sb, OP_KEY, request.getOpcode());
@@ -180,9 +183,8 @@ public class ServerRequester {
 			try {
 				builder.send();
 			} catch (RequestException e) {
-				UserRequester.displayError(0,
-						"An error occurred sending a request to the server: "
-								+ e.getMessage());
+				AppController.displayError("An error occurred sending a "
+						+ "request to the server: " + e.getMessage());
 			}
 
 			// If we have started a new session, reset the ticket number to 1.
@@ -235,10 +237,14 @@ public class ServerRequester {
 	public void warnSession() {
 		warned = true;
 		sessionTimer.schedule(CLIENT_TIMEOUT2 * 1000);
-		AppController.user.pushRequest(new UserCountdown(
-				"Your session will expire if there is no activity within "
-						+ "the next " + UserCountdown.COUNT_TOKEN + " seconds",
-				CLIENT_TIMEOUT2));
+		AlertPresenter presenter = (AlertPresenter) Presenter
+				.byPlace(AlertPresenter.PLACE);
+		presenter.setText("Your session will expire if there is no "
+				+ "activity within the next " + AlertView.COUNT_TOKEN
+				+ " seconds");
+		presenter.setTimeout(CLIENT_TIMEOUT2, 1.0);
+		presenter.go(AppController.user);
+
 	}
 
 	public void killSession() {

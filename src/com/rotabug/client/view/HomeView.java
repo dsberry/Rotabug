@@ -15,22 +15,21 @@ import com.rotabug.client.view.View;
 public class HomeView extends View implements HomePresenter.HomeDisplay {
 	private final Button testButton;
 	private final TextBox normalText;
+
 	public HomeView() {
 		super();
 		viewPanel.add(new Label("Home view"));
 		HorizontalPanel hp = new HorizontalPanel();
-		hp.setVerticalAlignment( HasVerticalAlignment.ALIGN_MIDDLE );
-		viewPanel.add( hp );
+		hp.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		viewPanel.add(hp);
 		testButton = new Button("Test 1");
 		hp.add(testButton);
 		Hyperlink lbl = new Hyperlink("Test2", Test2Presenter.PLACE);
-		hp.add( lbl );
-		Rotabug.addStyleAttribute( lbl, "padding-left:50px;");
-		
-		normalText = new TextBox();
-		hp.add( normalText );
+		hp.add(lbl);
+		Rotabug.addStyleAttribute(lbl, "padding-left:50px;");
 
-		
+		normalText = new TextBox();
+		hp.add(normalText);
 	}
 
 	public HasClickHandlers getTestButton() {
@@ -38,4 +37,3 @@ public class HomeView extends View implements HomePresenter.HomeDisplay {
 	}
 
 }
-

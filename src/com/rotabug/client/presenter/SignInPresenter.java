@@ -2,7 +2,7 @@ package com.rotabug.client.presenter;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.rotabug.client.ServerRequester;
-import com.rotabug.client.UserRequester;
+import com.rotabug.client.ViewBox;
 import com.rotabug.client.event.RotabugEventType;
 
 public class SignInPresenter extends Presenter {
@@ -20,7 +20,7 @@ public class SignInPresenter extends Presenter {
 
 		}
 
-		public SignInPresenter(ServerRequester server, UserRequester user,
+		public SignInPresenter(ServerRequester server, ViewBox user,
 				HandlerManager eventBus, Display view) {
 			super(server, user, eventBus, view);
 			this.display = (LoginDisplay) super.display;

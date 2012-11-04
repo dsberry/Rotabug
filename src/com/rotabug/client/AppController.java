@@ -4,10 +4,10 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.rotabug.client.event.RotabugEvent;
 import com.rotabug.client.event.RotabugEventHandler;
 import com.rotabug.client.event.RotabugEventType;
+import com.rotabug.client.presenter.AlertPresenter;
 import com.rotabug.client.presenter.HomePresenter;
 import com.rotabug.client.presenter.Presenter;
 import com.rotabug.client.presenter.SignInPresenter;
@@ -17,27 +17,25 @@ import com.rotabug.client.presenter.Test2Presenter;
 public class AppController implements ValueChangeHandler<String> {
 
 	public static ServerRequester server = null;
-	public static UserRequester user = null;
 	public static HandlerManager eventBus = null;
-	public static UserDialog userDialog = null;
-
-	// The container in which to display the application's user interface
-	private HasWidgets appUI;
+	public static ViewBox user = null;
+	public static ViewBox appUI = null;
 
 	@SuppressWarnings("static-access")
-	public AppController(ServerRequester server, UserDialog user,
-			HandlerManager eventBus) {
+	public AppController(ServerRequester server, ViewBox user,
+			HandlerManager eventBus, ViewBox appui) {
 		if (this.server == null)
 			this.server = server;
 		if (this.eventBus == null)
 			this.eventBus = eventBus;
-		if (this.userDialog == null)
-			this.userDialog = user;
+		if (this.user == null)
+			this.user = user;
+		if (this.appUI == null)
+			this.appUI = appui;
 		bind();
 	}
 
-	public void go(final HasWidgets appUI) {
-		this.appUI = appUI;
+	public void go() {
 		if ("".equals(History.getToken())) {
 			History.newItem(HomePresenter.PLACE);
 		} else {
@@ -47,7 +45,7 @@ public class AppController implements ValueChangeHandler<String> {
 
 	// Called when a history event occurs (e.g. the "back" button)
 	public void onValueChange(ValueChangeEvent<String> event) {
-		newView(event.getValue(),Rotabug.APPUI);
+		newView(event.getValue(), appUI);
 	}
 
 	private void bind() {
@@ -59,43 +57,64 @@ public class AppController implements ValueChangeHandler<String> {
 		// event.
 		eventBus.addHandler(RotabugEvent.TYPE, new RotabugEventHandler() {
 			public void onRotabugEvent(RotabugEvent event) {
-				RotabugEventType type = event.getType();
-				if( type == Presenter.CLOSE ){
-					int target = event.getTarget();
-					if( target == Rotabug.APPUI ) {
-						History.back();
-					} else if( target == Rotabug.DIALOG ) {
-						userDialog.next();
-					} else {
-						UserRequester.displayError(0, "Unknown Rotabug target.");
-					}
-				} else if (type == Test1Presenter.PRESENT) {
-					History.newItem(Test1Presenter.PLACE);
-				} else if (type == Test2Presenter.PRESENT) {
-					History.newItem(Test2Presenter.PLACE);
-				} else if (type == SignInPresenter.PRESENT) {
-					History.newItem(SignInPresenter.PLACE);
-				} else {
-					UserRequester.displayError(0, "Unknown Rotabug event.");
+				String place = null;
 
+				RotabugEventType type = event.getType();
+				ViewBox container = event.getContainer();
+				if (container == null)
+					container = appUI;
+
+				if (type == Presenter.CLOSE) {
+					container.close();
+				} else if (type == Test1Presenter.PRESENT) {
+					place = Test1Presenter.PLACE;
+				} else if (type == Test2Presenter.PRESENT) {
+					place = Test2Presenter.PLACE;
+				} else if (type == SignInPresenter.PRESENT) {
+					place = SignInPresenter.PLACE;
+				} else {
+					displayError("Unknown Rotabug event.");
 				}
+
+				if (place != null) {
+					if (container == appUI) {
+						History.newItem(place);
+					} else {
+						newView(place, container);
+					}
+				}
+
+				if (event.getActivity())
+					AppController.server.flagActivity();
 			}
 		});
 	}
 
 	// Display a new page of the application's user interface.
-	public void newView(String token, int target) {
+	public void newView(String token, ViewBox target) {
 		if (token != null) {
-			HasWidgets widget = null;
-			if( target == Rotabug.APPUI ) {
-				widget = appUI;
-			} else if( target == Rotabug.DIALOG ){
-				widget = userDialog;
-			}
 			Presenter presenter = Presenter.byPlace(token);
 			if (presenter != null)
-				presenter.go(widget,target);
+				presenter.go(target);
 		}
+	}
+
+	public static void displayMessage(int level, String text) {
+		if (Rotabug.DEBUG_LEVEL >= level) {
+			AlertPresenter presenter = (AlertPresenter) Presenter
+					.byPlace(AlertPresenter.PLACE);
+			presenter.setText(text);
+			presenter.setTitle("Alert");
+			presenter.go(user);
+		}
+	}
+
+	public static void displayError(String text) {
+		AlertPresenter presenter = (AlertPresenter) Presenter
+				.byPlace(AlertPresenter.PLACE);
+		presenter.setText(text);
+		presenter.setTitle("Error");
+		presenter.go(user);
 
 	}
 }

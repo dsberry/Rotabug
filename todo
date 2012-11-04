@@ -22,4 +22,4 @@ Current Work:
  
 - Login and Sign up: Allow accounts from Rotabug, Facebook, Gmail, Twitter, OpenID to be used. 
   
-
+ - Need to do something better if the user's session times out. Currently it just displays "timeout.html"

@@ -25,10 +25,6 @@ public class Rotabug implements EntryPoint {
 	public static final String LOGO_WIDTH = "100px";
 	public static final String LOGO_HEIGHT = "94px";
 
-	// Identifiers for differnt places where a view can be displayed.
-	public static final int APPUI = 0;
-	public static final int DIALOG = 1;
-
 	// Indicates how verbose we should be. Zero is for normal user-level
 	// verbosity. Higher values produce more verbosity.
 	public static final int DEBUG_LEVEL = 1;
@@ -36,19 +32,6 @@ public class Rotabug implements EntryPoint {
 	// Main entry. This follows the architecture described at
 	// https://developers.google.com/web-toolkit/articles/mvp-architecture
 	public void onModuleLoad() {
-
-		// Create an object to communicate with the server
-		ServerRequester server = new ServerRequester();
-
-		// Create an object for displaying dialog boxes for user interaction.
-		UserRequester userOld = UserRequester.getInstance();
-		UserDialog user = UserDialog.getInstance();
-
-		// Create an object for sending events from one presenter to another.
-		HandlerManager eventBus = new HandlerManager(null);
-
-		// This the main class for creating and controlling the GUI.
-		AppController appViewer = new AppController(server, user, eventBus);
 
 		// Get the outer most panel which contains the headers, footers, etc,
 		// plus the application GUI.
@@ -98,8 +81,25 @@ public class Rotabug implements EntryPoint {
 		setID(appUI, "appUI");
 		root.add(appUI);
 
+		// Create an object for displaying the pages of the main application
+		// user interface.
+		ViewBox appui = new AppUI(appUI);
+
+		// Create an object for displaying dialog boxes for user interaction.
+		ViewBox user = new UserDialog();
+
+		// Create an object to communicate with the server
+		ServerRequester server = new ServerRequester();
+
+		// Create an object for sending events from one presenter to another.
+		HandlerManager eventBus = new HandlerManager(null);
+
+		// This the main class for creating and controlling the GUI.
+		AppController appViewer = new AppController(server, user, eventBus,
+				appui);
+
 		// Display the main home page for the app.
-		appViewer.go(appUI);
+		appViewer.go();
 
 	}
 
@@ -115,4 +115,5 @@ public class Rotabug implements EntryPoint {
 		style = style + attr;
 		DOM.setElementAttribute(el, "style", style);
 	}
+
 }

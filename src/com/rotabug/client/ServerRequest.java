@@ -36,11 +36,12 @@ public class ServerRequest implements RequestCallback {
 			next = nextRequest;
 
 		} else if (status == 401) {
-			UserRequester.displayError(0, "Your session has been inactive for too "
-					+ "long. Try reloading the page.");
+			AppController
+					.displayError("Your session has been inactive for too "
+							+ "long. Try reloading the page.");
 
 		} else {
-			UserRequester.displayError(0, "HTTP error " + Integer.toString(status)
+			AppController.displayError("HTTP error " + Integer.toString(status)
 					+ " occurred: " + response.getStatusText());
 		}
 		AppController.server.requestCompleted(next);
@@ -49,7 +50,7 @@ public class ServerRequest implements RequestCallback {
 
 	// Called if no response was received from the server.
 	public void onError(Request request, Throwable exception) {
-		UserRequester.displayError(0, "Operation could not be completed: "
+		AppController.displayError("Operation could not be completed: "
 				+ exception.getMessage());
 		AppController.server.requestCompleted(null);
 
