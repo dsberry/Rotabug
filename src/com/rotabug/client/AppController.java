@@ -72,6 +72,8 @@ public class AppController implements ValueChangeHandler<String> {
 					place = Test2Presenter.PLACE;
 				} else if (type == SignInPresenter.PRESENT) {
 					place = SignInPresenter.PLACE;
+				} else if (type == HomePresenter.PRESENT) {
+					place = HomePresenter.PLACE;
 				} else {
 					displayError("Unknown Rotabug event.");
 				}

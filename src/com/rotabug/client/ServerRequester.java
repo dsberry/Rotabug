@@ -71,8 +71,8 @@ public class ServerRequester {
 	// client activity. The "warned" field indicates if the warning has been
 	// issued.
 	private Timer sessionTimer = null;
-	private static final int CLIENT_TIMEOUT1 = 10;
-	private static final int CLIENT_TIMEOUT2 = 4;
+	private static final int CLIENT_TIMEOUT1 = 600;
+	private static final int CLIENT_TIMEOUT2 = 15;
 	private boolean warned = false;
 
 	// A FIFO queue of request to send to the server.

@@ -1,0 +1,21 @@
+#!/bin/tcsh
+
+if( $# > 0 ) then
+   set app = $1
+else
+   set app = "Rotabug"
+endif
+
+set lcapp = ` echo $app | tr "[A-Z]" "[a-z]" `
+set outdir = "/var/www/html/$lcapp"
+set indir = "/var/www/html/$app"
+
+rm -rf $outdir >& /dev/null
+mkdir $outdir
+
+cp $indir/war/*.html $outdir
+cp $indir/war/*.png $outdir
+cp $indir/war/*.php $outdir
+cp -r $indir/war/${lcapp} $outdir
+
+

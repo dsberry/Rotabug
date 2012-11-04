@@ -29,7 +29,7 @@ public class Rotabug implements EntryPoint {
 	// verbosity. Higher values produce more verbosity.
 	public static final int DEBUG_LEVEL = 1;
 
-	// Main entry. This follows the architecture described at
+	// Main entry. This follows (roughly) the MVP architecture described at
 	// https://developers.google.com/web-toolkit/articles/mvp-architecture
 	public void onModuleLoad() {
 
@@ -57,15 +57,15 @@ public class Rotabug implements EntryPoint {
 
 		// Add links at the right end of the banner for sign-up, login and home.
 		VerticalPanel links = new VerticalPanel();
-		EventLink link = new EventLink("Sign in", SignInPresenter.PRESENT);
-		link.addStyleName("banner-link");
-		link.setTitle("Sign in using a new or existing account");
-		links.add(link);
+		EventLink signInLink = new EventLink("Sign in", SignInPresenter.PRESENT);
+		signInLink.addStyleName("banner-link");
+		signInLink.setTitle("Sign in using a new or existing account");
+		links.add(signInLink);
 
-		Hyperlink linka = new Hyperlink("Home", HomePresenter.PLACE);
-		linka.setStyleName("banner-link");
-		linka.setTitle("Go to the " + APP_NAME + " home page");
-		links.add(linka);
+		EventLink homeLink = new EventLink("Home", HomePresenter.PRESENT);
+		homeLink.addStyleName("banner-link");
+		homeLink.setTitle("Go to the " + APP_NAME + " home page");
+		links.add(homeLink);
 		//
 		// link = new Hyperlink("Log in", LogInPresenter.PLACE);
 		// link.setStyleName( "banner-link" );
