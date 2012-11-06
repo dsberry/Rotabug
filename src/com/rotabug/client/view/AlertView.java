@@ -8,22 +8,17 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.rotabug.client.AppController;
 import com.rotabug.client.ViewBox;
-import com.rotabug.client.event.RotabugEvent;
 import com.rotabug.client.presenter.AlertPresenter;
-import com.rotabug.client.presenter.Presenter;
+import com.rotabug.client.presenter.AlertPresenter.AlertDisplay;
 import com.rotabug.client.view.View;
 
 public class AlertView extends View implements AlertPresenter.AlertDisplay {
-	public static final String COUNT_TOKEN = ">>COUNT<<";
-
 	private final Button okButton;
 	private final HTML html;
-	private Timer alertTimer = null;
-	protected int timeout = 0;
 	protected int count;
 	private Timer countTimer = null;
-	private int delta_time = 0;
 	private String text = null;
+	private boolean hasCount;
 
 	public AlertView() {
 		super();
@@ -36,10 +31,13 @@ public class AlertView extends View implements AlertPresenter.AlertDisplay {
 		vp.add(okButton);
 		viewPanel.add(vp);
 		setTitle("Alert");
+		hasCount = false;
 	}
 
 	public void setText(String text) {
 		this.text = text;
+		hasCount = (text.indexOf(AlertDisplay.COUNT_TOKEN) >= 0);
+		count = AppController.user.getTimeout();
 		format();
 	}
 
@@ -47,30 +45,10 @@ public class AlertView extends View implements AlertPresenter.AlertDisplay {
 		return okButton;
 	}
 
-	public void setTimeout(int timeout) {
-		setTimeout(timeout, 0.0);
-	}
-
-	public void setTimeout(int timeout, double delta) {
-		this.timeout = timeout;
-		if (timeout > 0) {
-			delta_time = (int) delta * 1000;
-			if (delta_time > 0) {
-				count = timeout;
-				format();
-
-			} else {
-				delta_time = 0;
-			}
-		} else {
-			delta_time = 0;
-		}
-	}
-
 	protected void format() {
 		String msg;
-		if (delta_time > 0) {
-			msg = text.replaceAll(COUNT_TOKEN, Integer.toString(count));
+		if (hasCount) {
+			msg = text.replaceAll(AlertDisplay.COUNT_TOKEN, Integer.toString(count));
 		} else {
 			msg = text;
 		}
@@ -78,35 +56,21 @@ public class AlertView extends View implements AlertPresenter.AlertDisplay {
 	}
 
 	public void onShow(ViewBox container) {
-		if (timeout > 0) {
-			final ViewBox cont = container;
-			alertTimer = new Timer() {
+		if (hasCount) {
+			count = AppController.user.getTimeout();
+			countTimer = new Timer() {
 				public void run() {
-					AppController.eventBus.fireEvent(new RotabugEvent(
-							Presenter.CLOSE, cont, false));
+					count--;
+					format();
+					if (countTimer != null)
+						countTimer.schedule(1000);
 				}
 			};
-			alertTimer.schedule(timeout * 1000);
-
-			if (delta_time > 0) {
-				countTimer = new Timer() {
-					public void run() {
-						count--;
-						format();
-						if (countTimer != null)
-							countTimer.schedule(delta_time);
-					}
-				};
-				countTimer.schedule(delta_time);
-			}
+			countTimer.schedule(1000);
 		}
 	}
 
 	public void onClose(ViewBox container) {
-		if (alertTimer != null) {
-			alertTimer.cancel();
-			alertTimer = null;
-		}
 		if (countTimer != null) {
 			countTimer.cancel();
 			countTimer = null;

@@ -18,14 +18,14 @@ public class AppController implements ValueChangeHandler<String> {
 
 	public static ServerRequester server = null;
 	public static HandlerManager eventBus = null;
-	public static ViewBox user = null;
-	public static ViewBox appUI = null;
+	public static UserDialog user = null;
+	public static AppUI appUI = null;
 
 	// Record static references to the four management objects above, so that
 	// they can be accessed easily from anywhere.
 	@SuppressWarnings("static-access")
-	public AppController(ServerRequester server, ViewBox user,
-			HandlerManager eventBus, ViewBox appui) {
+	public AppController(ServerRequester server, UserDialog user,
+			HandlerManager eventBus, AppUI appui) {
 		if (this.server == null)
 			this.server = server;
 		if (this.eventBus == null)

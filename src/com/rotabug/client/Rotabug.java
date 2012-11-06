@@ -77,10 +77,10 @@ public class Rotabug implements EntryPoint {
 
 		// Create an object for displaying the pages of the main application
 		// user interface. This encapsulates the above VerticalPanel.
-		ViewBox appui = new AppUI(appUI);
+		AppUI appui = new AppUI(appUI);
 
 		// Create an object for managing a dialog box used for user interaction.
-		ViewBox user = new UserDialog();
+		UserDialog user = new UserDialog();
 
 		// Create an object to communicate with the server
 		ServerRequester server = new ServerRequester();

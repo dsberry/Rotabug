@@ -10,6 +10,7 @@ import com.rotabug.client.ServerRequester;
 import com.rotabug.client.ViewBox;
 import com.rotabug.client.event.RotabugEvent;
 import com.rotabug.client.event.RotabugEventType;
+import com.rotabug.client.presenter.AlertPresenter.AlertDisplay;
 
 public class Test2Presenter extends Presenter {
 	public static final String PLACE = "test2";
@@ -34,7 +35,7 @@ public class Test2Presenter extends Presenter {
 						container, true));
 				server.submitRequest(new ServerRequest(20) {
 					public void onSuccess(String result) {
-						AppController.displayMessage(0, "Test 2: " + result);
+						AppController.displayMessage(0, "Test 2: " + result+AlertDisplay.COUNT_TOKEN );
 					}
 				});
 			}

@@ -10,8 +10,8 @@ import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.rotabug.client.presenter.AlertPresenter;
+import com.rotabug.client.presenter.AlertPresenter.AlertDisplay;
 import com.rotabug.client.presenter.Presenter;
-import com.rotabug.client.view.AlertView;
 
 public class ServerRequester {
 
@@ -72,7 +72,7 @@ public class ServerRequester {
 	// issued.
 	private Timer sessionTimer = null;
 	private static final int CLIENT_TIMEOUT1 = 600;
-	private static final int CLIENT_TIMEOUT2 = 15;
+	private static final int CLIENT_TIMEOUT2 = 30;
 	private boolean warned = false;
 
 	// A FIFO queue of request to send to the server.
@@ -240,9 +240,9 @@ public class ServerRequester {
 		AlertPresenter presenter = (AlertPresenter) Presenter
 				.byPlace(AlertPresenter.PLACE);
 		presenter.setText("Your session will expire if there is no "
-				+ "activity within the next " + AlertView.COUNT_TOKEN
+				+ "activity within the next " + AlertDisplay.COUNT_TOKEN
 				+ " seconds");
-		presenter.setTimeout(CLIENT_TIMEOUT2, 1.0);
+		AppController.user.setTimeout(CLIENT_TIMEOUT2);
 		presenter.go(AppController.user);
 
 	}

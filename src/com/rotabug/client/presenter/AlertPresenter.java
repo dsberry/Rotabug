@@ -19,13 +19,9 @@ public class AlertPresenter extends Presenter {
 	protected AlertDisplay display;
 
 	public interface AlertDisplay extends Display {
+		public static final String COUNT_TOKEN = ">>COUNT<<";
 		HasClickHandlers getOKButton();
-
 		void setText(String text);
-
-		void setTimeout(int timeout);
-
-		void setTimeout(int timeout, double delta);
 	}
 
 	public AlertPresenter(ServerRequester server, ViewBox user,
@@ -51,19 +47,5 @@ public class AlertPresenter extends Presenter {
 						true));
 			}
 		});
-	}
-
-	// Set the time in seconds after which the view should be closed
-	// automatically.
-	public void setTimeout(int timeout) {
-		display.setTimeout(timeout);
-	}
-
-	// Set the time in seconds after which the view should be closed
-	// automatically. Also specify that any occurrences of the string given
-	// by AlertView.COUNT_TOKEN, be replaced within the message text by a
-	// decreasing count at intervals of "delta" seconds.
-	public void setTimeout(int timeout, double delta) {
-		display.setTimeout(timeout, delta);
 	}
 }
