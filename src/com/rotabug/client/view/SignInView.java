@@ -7,12 +7,11 @@ import com.rotabug.client.EventLink;
 import com.rotabug.client.Rotabug;
 import com.rotabug.client.presenter.SignInPresenter;
 import com.rotabug.client.presenter.Test1Presenter;
-import com.rotabug.client.view.View;
 
-public class SignInView extends View implements SignInPresenter.LoginDisplay {
+public class SignInView extends OKView implements SignInPresenter.SignInDisplay {
 
 	public SignInView() {
-		super();
+		super(true);
 
 		VerticalPanel vp = new VerticalPanel();
 
@@ -34,7 +33,8 @@ public class SignInView extends View implements SignInPresenter.LoginDisplay {
 		hp2.add(link2);
 		vp.add(hp2);
 
-		viewPanel.add(vp);
+		setBody(vp);
+		setTitle("Sign-in");
 	}
 
 }

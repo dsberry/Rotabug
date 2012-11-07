@@ -54,21 +54,6 @@ public class Rotabug implements EntryPoint {
 		setID(title, "banner-title");
 		banner.add(title);
 
-		// Add links at the right end of the banner for sign-up, login and home.
-		VerticalPanel links = new VerticalPanel();
-		EventLink signInLink = new EventLink("Sign in", SignInPresenter.PRESENT);
-		signInLink.addStyleName("banner-link");
-		signInLink.setTitle("Sign in using a new or existing account");
-		links.add(signInLink);
-
-		EventLink homeLink = new EventLink("Home", HomePresenter.PRESENT);
-		homeLink.addStyleName("banner-link");
-		homeLink.setTitle("Go to the " + APP_NAME + " home page");
-		links.add(homeLink);
-
-		banner.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
-		banner.add(links);
-
 		// Create a panel for the application GUI, set its CSS ID and add it to
 		// the root panel.
 		VerticalPanel appUI = new VerticalPanel();
@@ -92,6 +77,21 @@ public class Rotabug implements EntryPoint {
 		AppController appViewer = new AppController(server, user, eventBus,
 				appui);
 
+		// Add links at the right end of the banner for sign-up, login and home.
+		VerticalPanel links = new VerticalPanel();
+		EventLink signInLink = new EventLink("Sign in", SignInPresenter.PRESENT, user, true);
+		signInLink.addStyleName("banner-link");
+		signInLink.setTitle("Sign in using a new or existing account");
+		links.add(signInLink);
+
+		EventLink homeLink = new EventLink("Home", HomePresenter.PRESENT);
+		homeLink.addStyleName("banner-link");
+		homeLink.setTitle("Go to the " + APP_NAME + " home page");
+		links.add(homeLink);
+
+		banner.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		banner.add(links);
+		
 		// Display the main home page for the app.
 		appViewer.go();
 

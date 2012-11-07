@@ -1,19 +1,13 @@
 package com.rotabug.client.view;
 
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.rotabug.client.AppController;
 import com.rotabug.client.ViewBox;
 import com.rotabug.client.presenter.AlertPresenter;
 import com.rotabug.client.presenter.AlertPresenter.AlertDisplay;
-import com.rotabug.client.view.View;
 
-public class AlertView extends View implements AlertPresenter.AlertDisplay {
-	private final Button okButton;
+public class AlertView extends OKView implements AlertPresenter.AlertDisplay {
 	private final HTML html;
 	protected int count;
 	private Timer countTimer = null;
@@ -21,15 +15,9 @@ public class AlertView extends View implements AlertPresenter.AlertDisplay {
 	private boolean hasCount;
 
 	public AlertView() {
-		super();
+		super(false);
 		html = new HTML("");
-		okButton = new Button("OK");
-		VerticalPanel vp = new VerticalPanel();
-		vp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-		viewPanel.add(html);
-		vp.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
-		vp.add(okButton);
-		viewPanel.add(vp);
+		setBody(html);
 		setTitle("Alert");
 		hasCount = false;
 	}
@@ -41,14 +29,11 @@ public class AlertView extends View implements AlertPresenter.AlertDisplay {
 		format();
 	}
 
-	public HasClickHandlers getOKButton() {
-		return okButton;
-	}
-
 	protected void format() {
 		String msg;
 		if (hasCount) {
-			msg = text.replaceAll(AlertDisplay.COUNT_TOKEN, Integer.toString(count));
+			msg = text.replaceAll(AlertDisplay.COUNT_TOKEN,
+					Integer.toString(count));
 		} else {
 			msg = text;
 		}
@@ -76,5 +61,4 @@ public class AlertView extends View implements AlertPresenter.AlertDisplay {
 			countTimer = null;
 		}
 	}
-
 }

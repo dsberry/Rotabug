@@ -49,7 +49,7 @@ public abstract class Presenter {
 
 	// Set up bindings between this presenter and the controls in the associated
 	// view.
-	public abstract void bind();
+	protected abstract void bind();
 
 	// Display the view associated with this Presenter in a given ViewBox
 	public void go(final ViewBox container) {

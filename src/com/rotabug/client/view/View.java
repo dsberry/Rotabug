@@ -5,10 +5,10 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.rotabug.client.ViewBox;
 
-public class View extends Composite {
+public abstract class View extends Composite {
 	protected final FlowPanel viewPanel;
 
-	public View() {
+	protected View() {
 		viewPanel = new FlowPanel();
 		initWidget(viewPanel);
 		viewPanel.setStyleName("view");
