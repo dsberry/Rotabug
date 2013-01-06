@@ -2,6 +2,7 @@ package com.rotabug.client.view;
 
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.rotabug.client.EventLink;
 import com.rotabug.client.Rotabug;
@@ -14,24 +15,13 @@ public class SignInView extends OKView implements SignInPresenter.SignInDisplay 
 		super(true);
 
 		VerticalPanel vp = new VerticalPanel();
-
-		HorizontalPanel hp1 = new HorizontalPanel();
-		hp1.add(new Image("blue_arrow.png"));
-		EventLink link1 = new EventLink("Create a new" + Rotabug.APP_NAME
-				+ " account", Test1Presenter.PRESENT);
-		link1.addStyleName("banner-link");
-		link1.setTitle("Sign-in using a new " + Rotabug.APP_NAME + " account");
-		hp1.add(link1);
-		vp.add(hp1);
-
-		HorizontalPanel hp2 = new HorizontalPanel();
-		hp2.add(new Image("blue_arrow.png"));
-		EventLink link2 = new EventLink("Login using...",
-				Test1Presenter.PRESENT);
-		link2.addStyleName("banner-link");
-		link2.setTitle("Sign-in using an existing account");
-		hp2.add(link2);
-		vp.add(hp2);
+		vp.add(new Label("Click one of the following logos below to log into "+Rotabug.APP_NAME+" using your account with the selected site."));
+		HorizontalPanel buttonPanel = new HorizontalPanel();
+		buttonPanel.add(new Image("google_logo.jpg"));
+		buttonPanel.add(new Image("yahoo_logo.jpg"));
+		buttonPanel.add(new Image("facebook_logo.jpg"));
+		buttonPanel.add(new Image("twitter_logo.jpg"));
+		vp.add( buttonPanel );
 
 		setBody(vp);
 		setTitle("Sign-in");
